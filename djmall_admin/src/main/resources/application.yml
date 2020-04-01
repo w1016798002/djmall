@@ -1,0 +1,26 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /admin
+    jsp:
+      init-parameters:
+        development: true
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/page/
+      suffix: .jsp
+      hiddenmethod:
+        filter:
+          enabled: true
+    static-path-pattern: /static/**
+# Dubbo
+dubbo:
+  application:
+    name: admin # 应用名
+    qos-enable: false # 关闭在线调试
+  registry:
+    address: zookeeper://localhost:2181 # 注册中心地址
+  consumer:
+    check: false
+    timeout: 60000
