@@ -67,7 +67,7 @@ public class ResourceController {
     @RequestMapping("findByResourceName")
     public Boolean findByName(String resourceName) throws Exception {
         ResourceDTOResp resourceDTOResp = resourceApi.findByName(resourceName);
-        if (!resourceDTOResp.equals(SystemConstant.NULL)) {
+        if (resourceDTOResp != null) {
             return false;
         }
         return true;

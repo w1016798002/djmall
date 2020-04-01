@@ -58,11 +58,6 @@ public class UserEntity implements Serializable {
     private String email;
 
     /**
-     * 级别  1为商户 2为管理员
-     */
-    private Integer level;
-
-    /**
      * 性别  1男2女
      */
     private Integer sex;

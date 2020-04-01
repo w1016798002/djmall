@@ -63,6 +63,7 @@ public class ShiroConfiguration {
         filters.put("/auth/user/add", "anon");
         filters.put("/auth/user/toAdd", "anon");
         filters.put("/auth/user/getSalt", "anon");
+        filters.put("/auth/user/distinct", "anon");
         // authc 表示必须认证才可访问
         filters.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filters);

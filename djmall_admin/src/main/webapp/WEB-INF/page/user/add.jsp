@@ -16,25 +16,31 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>\static\layer-v3.1.1\layer\layer.js"></script>
 <script src="<%=request.getContextPath()%>\static\js\jquery.validate.js"></script>
 <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/layui.all.js"></script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/css/layui.css"  media="all">
 <body>
     <form id="fm">
-        用户名:<input type="text" name="userName" id="userName"><br />
-        昵称:<input type="text" name="nickName" id="userName2"><br />
-        密码:<input type="password" name="userPwd" id="pwd"><br />
-        确认密码:<input type="password" name="userPwd2"><br />
-        手机号:<input type="text" name="phone" id="phone"><br />
-        邮箱:<input type="text" name="email" id="email"><br />
-        级别：
-        商户<input type="radio" name="level" value="1" checked>
-        管理员<input type="radio" name="level" value="2"><br />
-        性别:
-        男<input type="radio" name="sex" value="1" checked>
-        女<input type="radio" name="sex" value="2"><br />
-        <input type="hidden" name="status" value="-1">
-        <input type="hidden" name="isDel" value="1">
-        <input type="hidden" name="salt" value="${salt}" id="salt">
-        <a href="<%=request.getContextPath()%>/auth/user/toLogin">已有账号?前去登录</a><br/>
-        <input type="submit" value="注册">
+        <table class="layui-table">
+            <tr align="center"><td>用户名:</td><td><input type="text" name="userName" id="userName"></td></tr>
+            <tr align="center"><td>昵称:</td><td><input type="text" name="nickName" id="userName2"></td></tr>
+            <tr align="center"><td>密码:</td><td><input type="password" name="userPwd" id="pwd"></td></tr>
+            <tr align="center"><td>确认密码:</td><td><input type="password" name="userPwd2"></td></tr>
+            <tr align="center"><td>手机号:</td><td><input type="text" name="phone" id="phone"></td></tr>
+            <tr align="center"><td>邮箱:</td><td><input type="text" name="email" id="email"></td></tr>
+            <tr align="center"><td>级别:</td><td>
+            <c:forEach items="${roleList}" var="r">
+                <input type="radio" name="roleId" value="${r.id}">${r.roleName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </c:forEach>
+            </td></tr>
+            <tr align="center"><td>性别:</td><td>
+            男&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="sex" value="1" checked>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;女&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="sex" value="2">
+            <input type="hidden" name="status" value="-1">
+            <input type="hidden" name="isDel" value="1">
+            <input type="hidden" name="salt" value="${salt}" id="salt"></td>
+            <tr><td colspan="2" align="center">
+            <a href="<%=request.getContextPath()%>/auth/user/toLogin" style="color: #A60000">已有账号?前去登录</a></td></tr>
+            <tr><td colspan="2" align="center"><input type="submit" value="注册"></td></tr>
+        </table>
     </form>
 </body>
 <script type="text/javascript">
@@ -69,13 +75,13 @@
                                 if (data == 'true'){
                                     return true;
                                 }else {
-                                    return false	;
+                                    return false;
                                 }
                             }
                         }
                     }
                 },
-                nickname:{
+                nickName:{
                     required:true,
                     minlength:1,
                     notEqu:true
@@ -153,7 +159,7 @@
                 },
                 phone:{
                     required:"请填写手机号",
-                    rangelength:"11位呀",
+                    rangelength:"11位",
                     digits:"只能是数字"
                 },
                 email:{
@@ -190,4 +196,9 @@
         }
     });
 </script>
+<style>
+    .error{
+        color:red;
+    }
+</style>
 </html>

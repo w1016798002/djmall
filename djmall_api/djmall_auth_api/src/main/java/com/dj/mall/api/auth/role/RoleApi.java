@@ -3,6 +3,7 @@ package com.dj.mall.api.auth.role;
 import com.dj.mall.model.dto.auth.role.RoleDTOReq;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleResourceDTOResp;
+import com.dj.mall.model.dto.auth.user.UserRoleDTOResp;
 
 import java.util.List;
 
@@ -72,4 +73,19 @@ public interface RoleApi {
      * @throws Exception
      */
     List<RoleResourceDTOResp> getList(Integer roleId) throws Exception;
+
+    /**
+     * 查找角色信息
+     * @return
+     * @throws Exception
+     */
+    List<RoleDTOResp> getRoleList() throws Exception;
+
+    /**
+     * 根据id查找用户角色
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    UserRoleDTOResp getUserRoleById(Integer id) throws Exception;
 }

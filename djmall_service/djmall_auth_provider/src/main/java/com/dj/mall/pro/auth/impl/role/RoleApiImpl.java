@@ -12,6 +12,7 @@ import com.dj.mall.model.constant.SystemConstant;
 import com.dj.mall.model.dto.auth.role.RoleDTOReq;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleResourceDTOResp;
+import com.dj.mall.model.dto.auth.user.UserRoleDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.pro.auth.service.role.RoleResourceService;
 import com.dj.mall.pro.auth.service.user.UserRoleService;
@@ -56,7 +57,7 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, RoleEntity> implements 
         queryWrapper.eq("is_del", SystemConstant.IS_DEL_FALSE);
         queryWrapper.eq("role_name", roleName);
         RoleEntity roleEntity = this.getOne(queryWrapper);
-        if (!roleEntity.equals(SystemConstant.NULL)) {
+        if (roleEntity != null) {
             return false;
         }
         return true;
@@ -147,5 +148,33 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, RoleEntity> implements 
     @Override
     public List<RoleResourceDTOResp> getList(Integer roleId) throws Exception {
         return DozerUtil.mapList(roleResourceService.getList(roleId), RoleResourceDTOResp.class);
+    }
+
+    /**
+     * 查找角色信息
+     *
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<RoleDTOResp> getRoleList() throws Exception {
+        QueryWrapper<RoleEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("is_del", SystemConstant.IS_DEL_FALSE);
+        return DozerUtil.mapList(this.list(queryWrapper), RoleDTOResp.class);
+    }
+
+    /**
+     * 根据id查找用户角色
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public UserRoleDTOResp getUserRoleById(Integer id) throws Exception {
+        QueryWrapper<UserRoleEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("is_del", SystemConstant.IS_DEL_FALSE);
+        queryWrapper.eq("user_id", id);
+        return DozerUtil.map(userRoleService.getOne(queryWrapper), UserRoleDTOResp.class);
     }
 }

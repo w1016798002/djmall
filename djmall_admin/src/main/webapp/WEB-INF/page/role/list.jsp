@@ -16,14 +16,18 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/layui.all.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/css/layui.css"  media="all">
 <body>
-    <shiro:hasPermission name="ROLE_ADD">
-        <input type="button" value="新增" onclick="add()"><br />
-    </shiro:hasPermission>
     <table class="layui-table">
-        <tr>
-            <th>用户id</th>
-            <th>角色名</th>
-            <th>操作</th>
+        <tr align="center">
+            <td colspan="3">
+                <shiro:hasPermission name="ROLE_ADD">
+                    <input type="button" value="新增" onclick="add()"><br />
+                </shiro:hasPermission>
+            </td>
+        </tr>
+        <tr align="center">
+            <td>用户id</td>
+            <td>角色名</td>
+            <td>操作</td>
         </tr>
         <tbody id="tbd">
 
@@ -43,7 +47,7 @@
                 var html = "";
                 for (var i = 0; i < data.length; i++) {
                     var r = data[i];
-                    html += "<tr>"
+                    html += "<tr align='center'>"
                     html += "<td>"+r.id+"</td>"
                     html += "<td>"+r.roleName+"</td>"
                     html += "<td><shiro:hasPermission name='ROLE_UPDATE'><input type='button' value='修改' onclick='updateById("+r.id+")'></shiro:hasPermission>"

@@ -4,6 +4,8 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 
+import java.util.List;
+
 /**
  * 用户api
  * @author 86150
@@ -36,10 +38,57 @@ public interface UserApi {
     Boolean distinct(UserDTOReq userDTOReq) throws Exception;
 
     /**
-     * 用户注册
+     *  用户注册
+     * @param userDTOReq
+     * @param roleId
+     * @throws Exception
+     */
+    void saveUser(UserDTOReq userDTOReq, Integer roleId) throws Exception;
+
+    /**
+     * 查询全部用户信息
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
+    List<UserDTOResp> getUserList(UserDTOReq userDTOReq) throws Exception;
+
+    /**
+     * 根据id删除用户
+     * @param ids
+     * @param isDel
+     * @throws Exception
+     */
+    void delByIds(Integer[] ids, Integer isDel) throws Exception;
+
+    /**
+     * 用户激活
+     * @param id
+     * @param status
+     * @throws Exception
+     */
+    void updateStatusById(Integer id, Integer status) throws Exception;
+
+    /**
+     * 授权
+     * @param userId
+     * @param roleId
+     * @throws Exception
+     */
+    void updateUserRole(Integer userId, Integer roleId) throws Exception;
+
+    /**
+     * 根据id获取用户信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    UserDTOResp getUserById(Integer id) throws Exception;
+
+    /**
+     * 根据id修改用户信息
      * @param userDTOReq
      * @throws Exception
      */
-    void saveUser(UserDTOReq userDTOReq) throws Exception;
-
+    void updateUser(UserDTOReq userDTOReq) throws Exception;
 }

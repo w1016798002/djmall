@@ -14,12 +14,23 @@
 <script src="<%=request.getContextPath()%>\static\js\jquery.validate.js"></script>
 <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/layer-v3.1.1/layer/layer.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/layui.all.js"></script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/css/layui.css"  media="all">
 <body>
-<form id="fm">
-    用户名:<input type="text" name="roleName" id="roleName"><br />
-    <input type="hidden" name="isDel" value="1">
-    <input type="submit" value="添加">
-</form>
+    <form id="fm">
+        <table class="layui-table">
+            <tr align="center">
+                <td>用户名:</td>
+                <td>
+                    <input type="text" name="roleName" id="roleName">
+                    <input type="hidden" name="isDel" value="1">
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="2"><input type="submit" value="添加"></td>
+            </tr>
+        </table>
+    </form>
 </body>
 <script type="text/javascript">
 

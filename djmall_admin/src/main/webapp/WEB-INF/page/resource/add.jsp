@@ -10,6 +10,8 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jquery.validate.js"></script>
     <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/layer-v3.1.1/layer/layer.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/layui.all.js"></script>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/css/layui.css"  media="all">
     <script type="text/javascript">
 
         $(function(){
@@ -85,14 +87,16 @@
 </head>
 <body>
 <form id="fm">
-    <input type="text" name="pId" value="${pId}" placeholder="上级节点" id="pId"><br>
-    <input type="text" name="resourceName" id="resourceName" placeholder="资源名称"><br />
-    <input type="text" name="url" placeholder="URL"><br />
-    <input type="text" name="resourceCode" placeholder="资源编码"><br />
-    <input type="radio" name="resourceType" value="1" checked>菜单
-    <input type="radio" name="resourceType" value="2">按钮<br>
-    <input type="hidden" name="isDel" value="1">
-    <input type="submit" value="添加">
+    <table class="layui-table">
+        <tr align="center"><td><input type="text" name="pId" value="${pId}" placeholder="上级节点" id="pId"></td></tr>
+        <tr align="center"><td><input type="text" name="resourceName" id="resourceName" placeholder="资源名称"></td></tr>
+        <tr align="center"><td><input type="text" name="url" placeholder="URL"></td></tr>
+        <tr align="center"><td><input type="text" name="resourceCode" placeholder="资源编码"></td></tr>
+        <tr align="center"><td><input type="radio" name="resourceType" value="1" checked>菜单
+            <input type="radio" name="resourceType" value="2">按钮</td></tr>
+            <input type="hidden" name="isDel" value="1"></td></tr>
+        <tr align="center"><td><input type="submit" value="添加"></td></tr>
+    </table>
 </form>
 </body>
 </html>

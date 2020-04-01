@@ -1,10 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
   User: 86150
-  Date: 2020/3/30
-  Time: 12:47
+  Date: 2020/4/1
+  Time: 21:42
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,30 +16,39 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/layui.all.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/css/layui.css"  media="all">
 <body>
-<form id = "fm">
-    <input type="hidden" name="id" value="${role.id}">
-    <table class="layui-table">
-        <tr align="center">
-            <td>角色名:</td>
-            <td><input type="text" name="roleName" value="${role.roleName}"></td>
-        </tr>
-        <tr align="center">
-            <td colspan="2"><input type="button" value="修改提交" onclick="update()"></td>
-        </tr>
-    </table>
-</form>
+    <form id = "fm">
+        <input type="hidden" name="userId" value="${userRole.userId}">
+        <table class="layui-table">
+            <tr align="center">
+                <td>编号</td>
+                <td>角色名</td>
+            </tr>
+            <c:forEach items="${roleList}" var="r">
+                <tr align="center">
+                    <td>
+                        <input type="radio" name="roleId" value="${r.id}" <c:if test="${r.id == userRole.roleId}">checked</c:if>>
+                            ${r.id}
+                    </td>
+                    <td>${r.roleName}</td>
+                </tr>
+            </c:forEach>
+            <tr align="center">
+                <td colspan="2"><input type="button" value="确定" onclick="update()"><br /></td>
+            </tr>
+        </table>
+    </form>
 </body>
 <script type="text/javascript">
 
     function update (){
         var index = layer.load(1,{shade:0.5});
         $.post(
-            "<%=request.getContextPath()%>/role/update",
+            "<%=request.getContextPath()%>/auth/user/updateUserRole",
             $("#fm").serialize(),
             function(data){
                 if (data.code != -1) {
                     layer.msg(data.msg, {icon: 6}, function(){
-                        parent.window.location.href = "<%=request.getContextPath()%>/role/toList";
+                        parent.window.location.href = "<%=request.getContextPath()%>/auth/user/toList";
                     });
                     return;
                 }

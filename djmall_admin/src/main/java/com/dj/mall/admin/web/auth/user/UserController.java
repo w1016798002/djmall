@@ -16,6 +16,8 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 用户控制层
  * @author 86150
@@ -75,12 +77,75 @@ public class UserController {
     /**
      * 用户注册
      * @param userVOReq
+     * @param roleId
      * @return
+     * @throws Exception
      */
     @RequestMapping("add")
-    public ResultModel<Object> add (UserVOReq userVOReq) throws Exception{
-        userApi.saveUser(DozerUtil.map(userVOReq, UserDTOReq.class));
+    public ResultModel<Object> add (UserVOReq userVOReq, Integer roleId) throws Exception {
+        userApi.saveUser(DozerUtil.map(userVOReq, UserDTOReq.class), roleId);
         return new ResultModel<>().success();
     }
 
+    /**
+     * 用户信息展示
+     * @param userVOReq
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("list")
+    public ResultModel<Object> getUserList(UserVOReq userVOReq) throws Exception {
+        List<UserDTOResp> userDTORespList = userApi.getUserList(DozerUtil.map(userVOReq, UserDTOReq.class));
+        List<UserVOResp> userVOResps = DozerUtil.mapList(userDTORespList, UserVOResp.class);
+        return new ResultModel<>().success(userVOResps);
+    }
+
+    /**
+     * 用户删除
+     * @param ids
+     * @param isDel
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("delByIds")
+    public ResultModel<Object> delByIds(Integer[] ids, Integer isDel) throws Exception {
+        userApi.delByIds(ids, isDel);
+        return new ResultModel<>().success();
+    }
+
+    /**
+     * 用户激活
+     * @param id
+     * @param status
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("updateStatusById")
+    public ResultModel<Object> updateStatusById(Integer id, Integer status) throws Exception {
+        userApi.updateStatusById(id, status);
+        return new ResultModel<>().success();
+    }
+
+    /**
+     * 授权
+     * @param userId
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("updateUserRole")
+    public ResultModel<Object> updateUserRole(Integer userId, Integer roleId) throws Exception {
+        userApi.updateUserRole(userId, roleId);
+        return new ResultModel<>().success();
+    }
+
+    /**
+     * 根据id修改
+     * @param userVOReq
+     * @return
+     */
+    @RequestMapping("update")
+    public ResultModel<Object> update(UserVOReq userVOReq) throws Exception {
+        userApi.updateUser(DozerUtil.map(userVOReq, UserDTOReq.class));
+        return new ResultModel<>().success();
+    }
 }

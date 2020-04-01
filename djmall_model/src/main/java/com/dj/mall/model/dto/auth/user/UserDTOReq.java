@@ -53,11 +53,6 @@ public class UserDTOReq implements Serializable {
     private String email;
 
     /**
-     * 级别  1为普通用户 2为管理员 3为经理
-     */
-    private Integer level;
-
-    /**
      * 性别  1男2女
      */
     private Integer sex;
@@ -76,4 +71,11 @@ public class UserDTOReq implements Serializable {
      * yan
      */
     private String salt;
+
+    /**
+     * 角色id
+     */
+    private Integer roleId;
+
+
 }

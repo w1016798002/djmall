@@ -1,21 +1,22 @@
-package com.dj.mall.admin.vo.auth.user;
+package com.dj.mall.mapper.auth.bo.user;
 
 import lombok.Data;
+import org.dozer.Mapping;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户VOReq
- * @author 86150
+ * 用户 BOResp
  */
 @Data
-public class UserVOReq implements Serializable {
+public class UserBOResp implements Serializable {
 
     /**
      * 用户id
      */
-    private Integer userId;
+    @Mapping("userId")
+    private Integer id;
 
     /**
      * 用户名
@@ -72,9 +73,10 @@ public class UserVOReq implements Serializable {
      */
     private String salt;
 
+
     /**
-     * 角色id
+     * 角色展示
      */
-    private Integer roleId;
+    private String roleShow;
 
 }

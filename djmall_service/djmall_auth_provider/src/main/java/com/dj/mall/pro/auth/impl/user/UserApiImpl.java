@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.entity.auth.resource.ResourceEntity;
 import com.dj.mall.entity.auth.user.UserEntity;
+import com.dj.mall.entity.auth.user.UserRoleEntity;
+import com.dj.mall.mapper.auth.bo.user.UserBOReq;
 import com.dj.mall.mapper.auth.user.UserMapper;
 import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.constant.SystemConstant;
@@ -13,6 +15,8 @@ import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.pro.auth.service.user.UserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +27,10 @@ import java.util.List;
  */
 @Service
 public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements UserApi {
+
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * 根据用户名和密码获取用户信息
@@ -39,7 +47,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
                 .or().eq("email", userDTOReq.getUserName())
                 .or().eq("phone", userDTOReq.getUserName()));
         UserEntity userEntity = this.getOne(queryWrapper);
-        if (userEntity.equals(SystemConstant.NULL)) {
+        if (userEntity == null) {
             throw new BusinessException(SystemConstant.LOGIN_ERROR);
         }
         if (!userEntity.getIsDel().equals(SystemConstant.IS_DEL_FALSE)) {
@@ -94,7 +102,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
         }
         queryWrapper.eq("is_del", SystemConstant.IS_DEL_FALSE);
         UserEntity userEntity = this.getOne(queryWrapper);
-        if (userEntity .equals(SystemConstant.NULL)) {
+        if (userEntity == null) {
             return true;
         }
         return false;
@@ -107,8 +115,103 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
      * @throws Exception
      */
     @Override
-    public void saveUser(UserDTOReq userDTOReq) throws Exception {
+    public void saveUser(UserDTOReq userDTOReq, Integer roleId) throws Exception {
+        //用户表添加
         userDTOReq.setCreateTime(new Date());
-        this.save(DozerUtil.map(userDTOReq, UserEntity.class));
+        UserEntity user = DozerUtil.map(userDTOReq, UserEntity.class);
+        this.save(user);
+        //用户资源表添加
+        UserRoleEntity userRoleEntity = new UserRoleEntity();
+        userRoleEntity.setIsDel(SystemConstant.IS_DEL_FALSE);
+        userRoleEntity.setRoleId(roleId);
+        userRoleEntity.setUserId(user.getId());
+        userRoleService.save(userRoleEntity);
+    }
+
+    /**
+     * 查询全部用户信息
+     *
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<UserDTOResp> getUserList(UserDTOReq userDTOReq) throws Exception {
+        return DozerUtil.mapList(getBaseMapper().getUserList(DozerUtil.map(userDTOReq, UserBOReq.class)), UserDTOResp.class);
+    }
+
+    /**
+     * 根据id删除用户
+     *
+     * @param ids
+     * @param isDel
+     * @throws Exception
+     */
+    @Override
+    public void delByIds(Integer[] ids, Integer isDel) throws Exception {
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("is_del", isDel);
+        updateWrapper.in("id", ids);
+        this.update(updateWrapper);
+    }
+
+    /**
+     * 用户激活
+     *
+     * @param id
+     * @param status
+     * @throws Exception
+     */
+    @Override
+    public void updateStatusById(Integer id, Integer status) throws Exception {
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("status", status);
+        updateWrapper.eq("id", id);
+        this.update(updateWrapper);
+    }
+
+    /**
+     * 授权
+     *
+     * @param userId
+     * @param roleId
+     * @throws Exception
+     */
+    @Override
+    public void updateUserRole(Integer userId, Integer roleId) throws Exception {
+        //用户角色表修改
+        UpdateWrapper<UserRoleEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("role_id", roleId);
+        updateWrapper.eq("user_id", userId);
+        userRoleService.update(updateWrapper);
+    }
+
+    /**
+     * 根据id获取用户信息
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public UserDTOResp getUserById(Integer id) throws Exception {
+        return DozerUtil.map(this.getById(id), UserDTOResp.class);
+    }
+
+    /**
+     * 根据id修改用户信息
+     *
+     * @param userDTOReq
+     * @throws Exception
+     */
+    @Override
+    public void updateUser(UserDTOReq userDTOReq) throws Exception {
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("user_name", userDTOReq.getUserName())
+                .set("phone", userDTOReq.getPhone())
+                .set("email", userDTOReq.getEmail())
+                .set("sex", userDTOReq.getSex());
+        updateWrapper.eq("id", userDTOReq.getUserId());
+        this.update(updateWrapper);
     }
 }

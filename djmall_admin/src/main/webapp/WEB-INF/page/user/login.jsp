@@ -13,15 +13,29 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/layer-v3.1.1/layer/layer.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/md5/md5-min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/layui.all.js"></script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/static/layui-v2.5.5/layui/css/layui.css"  media="all">
 <body>
 <form id="fm">
     <input type="hidden" name="salt" id="salt">
-    用户名:
-    <input type="text" name="userName" placeholder="请输入用户名/手机号/邮箱" onblur="getSalt(this)" /><br />
-    密码:
-    <input type="password" name="userPwd" placeholder="请输入密码" id="pwd"/><br />
-    <a href="<%=request.getContextPath()%>/auth/user/toAdd">还没有账号?点我去注册!</a><br />
-    <input type="button" value="登录" onclick="login()" /><br />
+    <table class="layui-table">
+        <tr align="center">
+            <td>用户名:</td>
+            <td><input type="text" name="userName" placeholder="请输入用户名/手机号/邮箱" onblur="getSalt(this)" /></td>
+        </tr>
+        <tr align="center">
+            <td>密码:</td>
+            <td><input type="password" name="userPwd" placeholder="请输入密码" id="pwd"/></td>
+        </tr>
+        <tr align="center">
+            <td colspan="2"><a href="<%=request.getContextPath()%>/auth/user/toAdd" style="color: red">还没有账号?点我去注册!</a><br /></td>
+        </tr>
+        <tr align="center">
+            <td colspan="2">
+                <input type="button" value="登录" onclick="login()" /><br />
+            </td>
+        </tr>
+    </table>
 </form>
 </body>
 <script type="text/javascript">

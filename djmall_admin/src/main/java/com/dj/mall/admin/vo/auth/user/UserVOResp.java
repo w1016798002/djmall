@@ -1,5 +1,6 @@
 package com.dj.mall.admin.vo.auth.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -40,22 +41,19 @@ public class UserVOResp implements Serializable {
     /**
      * 最后登录时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date lastLoginTime;
 
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 邮箱
      */
     private String email;
-
-    /**
-     * 级别  1为普通用户 2为管理员 3为经理
-     */
-    private Integer level;
 
     /**
      * 性别  1男2女
@@ -76,5 +74,10 @@ public class UserVOResp implements Serializable {
      * yan
      */
     private String salt;
+
+    /**
+     * 角色展示
+     */
+    private String roleShow;
 
 }

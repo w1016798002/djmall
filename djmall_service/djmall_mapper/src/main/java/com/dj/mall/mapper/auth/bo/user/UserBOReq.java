@@ -1,4 +1,4 @@
-package com.dj.mall.admin.vo.auth.user;
+package com.dj.mall.mapper.auth.bo.user;
 
 import lombok.Data;
 
@@ -6,11 +6,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户VOReq
- * @author 86150
+ * 用户 BOReq
  */
 @Data
-public class UserVOReq implements Serializable {
+public class UserBOReq implements Serializable {
 
     /**
      * 用户id
@@ -71,6 +70,12 @@ public class UserVOReq implements Serializable {
      * yan
      */
     private String salt;
+
+
+    /**
+     * 角色展示
+     */
+    private String roleShow;
 
     /**
      * 角色id

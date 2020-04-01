@@ -41,11 +41,6 @@ public class SystemConstant {
 	public static final Integer MENU = 1;
 
 	/**
-	 * null
-	 */
-	public static final String NULL = "null";
-
-	/**
 	 * 已删除-1
 	 */
 	public static final Integer IS_DEL_TRUE = -1;
