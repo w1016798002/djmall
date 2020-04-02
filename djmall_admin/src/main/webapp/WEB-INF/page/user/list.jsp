@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -40,12 +41,11 @@
             </td></tr>
         </form>
         <tr align="center"><td colspan="11">
-
-            <input type="button" value="修改" onclick="updateById()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="激活" onclick="updateStatusById()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="删除" onclick="delByIds()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" value="授权" onclick="updateUserRoleById()">&nbsp;&nbsp;
-
+            <shiro:hasPermission name="USER_UPDATE"><input type="button" value="修改" onclick="updateById()"></shiro:hasPermission>
+            <shiro:hasPermission name="USER_ACTIVE">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="激活" onclick="updateStatusById()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="USER_DEL"><input type="button" value="删除" onclick="delByIds()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="USER_WARRANT"><input type="button" value="授权" onclick="updateUserRoleById()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="RESET_PWD"><input type="button" value="重置密码" onclick="resetPwd()"></shiro:hasPermission>
         </td></tr>
         <tr align="center">
             <td></td>
@@ -96,6 +96,39 @@
             }
         )
     }
+    //重置密码
+    function resetPwd() {
+        var length = $("input[name='userId']:checked").length;
+        if(length <= 0){
+            layer.msg('请至少选择一个!', {icon:0});
+            return;
+        }
+        if(length > 1){
+            layer.msg('只能选择一个!', {icon:0});
+            return;
+        }
+        var id = $("input[name='userId']:checked").val();
+        var index = layer.load(1,{shade:0.5});
+        layer.confirm('确定重置密码吗?', {icon: 3, title:'提示'}, function(index){
+            $.post("<%=request.getContextPath()%>/auth/user/resetPwd",
+                {"id":id},
+                function(data){
+                    if(data.code == 200){
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            window.location.href = "<%=request.getContextPath()%>/auth/user/toList";
+                        });
+                        return;
+                    }
+                    layer.msg(data.msg, {icon:5});
+                    layer.close(index);
+                });
+        });
+        layer.close(index);
+    }
+    
     //去修改
     function updateById(){
         var length = $("input[name='userId']:checked").length;
@@ -134,8 +167,8 @@
             return;
         }
         var id = $("input[name='userId']:checked").val();
+
         layer.confirm('确定激活吗?', {icon: 3, title:'提示'}, function(index){
-            var index = layer.load(1,{shade:0.5});
             $.post(
                 "<%=request.getContextPath()%>/auth/user/updateStatusById",
                 {"id" : id, "status" : 1},
@@ -171,7 +204,6 @@
         });
         var id = $("input[name='userId']:checked").val();
         layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
-            var index = layer.load(1,{shade:0.5});
             $.post("<%=request.getContextPath()%>/auth/user/delByIds",
                 {"ids":str,"isDel": -1},
                 function(data){
@@ -187,8 +219,8 @@
                     layer.msg(data.msg, {icon:5});
                     layer.close(index);
                 });
+            layer.close(index);
         });
-        layer.close(index);
     }
 
     //授权

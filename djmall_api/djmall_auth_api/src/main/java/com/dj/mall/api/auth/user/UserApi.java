@@ -91,4 +91,19 @@ public interface UserApi {
      * @throws Exception
      */
     void updateUser(UserDTOReq userDTOReq) throws Exception;
+
+    /**
+     * 根据id重置密码
+     * @param id
+     * @throws Exception
+     */
+    void resetPwdById(Integer id) throws Exception;
+
+    /**
+     * 修改用户密码
+     * @param userName
+     * @param userPwd
+     * @throws Exception
+     */
+    void updatePwd(String userName, String userPwd) throws Exception;
 }

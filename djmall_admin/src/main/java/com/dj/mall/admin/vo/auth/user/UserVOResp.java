@@ -80,4 +80,9 @@ public class UserVOResp implements Serializable {
      */
     private String roleShow;
 
+    /**
+     * 重置的密码
+     */
+    private String resetPwd;
+
 }

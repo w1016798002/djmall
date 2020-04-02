@@ -49,4 +49,14 @@ public class SystemConstant {
 	 * 未删除 1
 	 */
 	public static final Integer IS_DEL_FALSE = 1;
+
+	/**
+	 * 返回状态吗
+	 */
+	public static final Integer ERROR_CODE = 300;
+
+	/**
+	 * 您的密码已被重置，将前往修改密码页面
+	 */
+	public static final String ERROR_MSG = "您的密码已被重置，将前往修改密码页面";
 }

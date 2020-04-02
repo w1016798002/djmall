@@ -5,7 +5,7 @@ import java.util.Random;
 
 /**
  * 密码安全工具类
- * 
+ *
  * @author turingdj
  *
  */
@@ -16,7 +16,7 @@ public class PasswordSecurityUtil {
 
 	/**
 	 * MD5算法
-	 * 
+	 *
 	 * @param bytes
 	 * @return
 	 */
@@ -25,18 +25,17 @@ public class PasswordSecurityUtil {
 		int t;
 		for (int i = 0; i < 16; i++) {// 16 == bytes.length;
 			t = bytes[i];
-			if (t < 0) {
+			if (t < 0)
 				t += 256;
-				sb.append(hexDigits[(t >>> 4)]);
-				sb.append(hexDigits[(t % 16)]);
-			}
+			sb.append(hexDigits[(t >>> 4)]);
+			sb.append(hexDigits[(t % 16)]);
 		}
 		return sb.toString();
 	}
 
 	/**
 	 * 32位MD5
-	 * 
+	 *
 	 * @param str
 	 *            待加密字符串
 	 * @return
@@ -49,7 +48,7 @@ public class PasswordSecurityUtil {
 
 	/**
 	 * 16位MD5
-	 * 
+	 *
 	 * @param str
 	 *            待加密字符串
 	 * @return
@@ -62,7 +61,7 @@ public class PasswordSecurityUtil {
 
 	/**
 	 * 生成密码盐 （时间毫秒值+随机数[6位]）
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -73,7 +72,7 @@ public class PasswordSecurityUtil {
 
 	/**
 	 * 生成随机数字符串（0-9）
-	 * 
+	 *
 	 * @param index
 	 *            长度
 	 * @return
@@ -89,7 +88,7 @@ public class PasswordSecurityUtil {
 
 	/**
 	 * 生成密码 规则：md5（md5密码 + slat）
-	 * 
+	 *
 	 * @param passwordMd5Str
 	 * @return
 	 * @throws Exception
@@ -100,7 +99,7 @@ public class PasswordSecurityUtil {
 
 	/**
 	 * 检查密码是否合法
-	 * 
+	 *
 	 * @param password
 	 *            待检测密码
 	 * @param checkPassword
@@ -118,9 +117,15 @@ public class PasswordSecurityUtil {
 		return flag;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.out.println(System.currentTimeMillis());
-		//1515206640731
-		//1515206651144
+		int resetPassword = 123456;
+		System.out.println("初始密码 = " + resetPassword);
+		String salt = generateSalt();
+		System.out.println("盐 = " + salt);
+		String md5Pwd = PasswordSecurityUtil.enCode32(String.valueOf(resetPassword));
+		System.out.println("初始密码mds加密 = " + md5Pwd);
+		String md5ResetPwd = PasswordSecurityUtil.enCode32(md5Pwd + salt);
+		System.out.println("md5加密(初始密码mds加密+盐) = " + md5ResetPwd);
 	}
 }

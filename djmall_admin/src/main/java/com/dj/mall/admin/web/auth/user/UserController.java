@@ -148,4 +148,29 @@ public class UserController {
         userApi.updateUser(DozerUtil.map(userVOReq, UserDTOReq.class));
         return new ResultModel<>().success();
     }
+
+    /**
+     * 根据id重置密码
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("resetPwd")
+    public ResultModel<Object> resetPwd(Integer id) throws Exception {
+        userApi.resetPwdById(id);
+        return new ResultModel<>().success();
+    }
+
+    /**
+     * 修改密码
+     * @param userName
+     * @param userPwd
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("updatePwd")
+    public ResultModel<Object> updatePwd(String userName, String userPwd) throws Exception {
+        userApi.updatePwd(userName, userPwd);
+        return new ResultModel<>().success();
+    }
 }

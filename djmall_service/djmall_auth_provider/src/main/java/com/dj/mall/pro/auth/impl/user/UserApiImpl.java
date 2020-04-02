@@ -15,9 +15,13 @@ import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.model.util.JavaEmailUtils;
+import com.dj.mall.model.util.PasswordSecurityUtil;
 import com.dj.mall.pro.auth.service.user.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +53,9 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
         UserEntity userEntity = this.getOne(queryWrapper);
         if (userEntity == null) {
             throw new BusinessException(SystemConstant.LOGIN_ERROR);
+        }
+        if (!StringUtils.isEmpty(userEntity.getResetPwd()) && userEntity.getResetPwd().equals(userEntity.getUserPwd())) {
+            throw new BusinessException(SystemConstant.ERROR_CODE, SystemConstant.ERROR_MSG);
         }
         if (!userEntity.getIsDel().equals(SystemConstant.IS_DEL_FALSE)) {
             throw  new BusinessException(SystemConstant.DEL);
@@ -212,6 +219,48 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
                 .set("email", userDTOReq.getEmail())
                 .set("sex", userDTOReq.getSex());
         updateWrapper.eq("id", userDTOReq.getUserId());
+        this.update(updateWrapper);
+    }
+
+    /**
+     * 根据id重置密码
+     *
+     * @param id
+     * @throws Exception
+     */
+    @Override
+    public void resetPwdById(Integer id) throws Exception {
+        String salt = PasswordSecurityUtil.generateSalt();
+        String resetPwd = PasswordSecurityUtil.generateRandom(6);
+        String md5Pwd = PasswordSecurityUtil.enCode32(resetPwd);
+        String md5ResetPwd = PasswordSecurityUtil.enCode32(md5Pwd + salt);
+        UserEntity user = this.getById(id);
+        //发送邮件
+        DateFormat df = DateFormat.getDateTimeInstance();
+        JavaEmailUtils.sendEmail(user.getEmail(), "重置密码",
+                "您的密码已被管理员于"+df.format(new Date())+"时重置为"+resetPwd+".为了您的账户安全，请及时修改。</br>" +
+                        "<a href='http://localhost:8081/admin/auth/user/toLogin'>点我去登陆</a><br>"
+        );
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper();
+        updateWrapper.set("user_pwd", md5ResetPwd)
+                .set("reset_pwd", md5ResetPwd)
+                .set("salt", salt);
+        updateWrapper.eq("id", id);
+        this.update(updateWrapper);
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param userName
+     * @param userPwd
+     * @throws Exception
+     */
+    @Override
+    public void updatePwd(String userName, String userPwd) throws Exception {
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("user_pwd", userPwd);
+        updateWrapper.eq("user_name", userName).or().eq("email", userName).or().eq("phone", userName);
         this.update(updateWrapper);
     }
 }

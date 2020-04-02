@@ -95,4 +95,18 @@ public class UserPageController {
         model.addAttribute("user", DozerUtil.map(user, UserVOResp.class));
         return "user/update";
     }
+
+    /**
+     * 去修改密码
+     * @param userName
+     * @param model
+     * @return
+     */
+    @RequestMapping("toUpdatePwd/{userName}")
+    public String toUpdatePwd(@PathVariable String userName, Model model) throws Exception {
+        String salt = PasswordSecurityUtil.generateSalt();
+        model.addAttribute("userName", userName);
+        model.addAttribute("salt", salt);
+        return "user/update_pwd";
+    }
 }

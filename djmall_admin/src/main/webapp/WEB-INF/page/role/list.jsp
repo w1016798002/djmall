@@ -92,7 +92,6 @@
 
     function updateById(id){
         layer.confirm('确定修改吗?', {icon: 3, title:'提示'}, function(index){
-            //do something
             layer.open({
                 type: 2,
                 title: '修改页面',

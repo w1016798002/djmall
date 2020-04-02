@@ -15,11 +15,11 @@ import java.util.Properties;
 public class JavaEmailUtils {
 
 	// 发件人的中文昵称
-	private static final String nickname = "zjq";
+	private static final String nickname = "wb";
 	// 发件人邮箱
-	private static final String username = "1975977946@qq.com";
+	private static final String username = "1016798002@qq.com";
 	// 发件人在邮箱服务器中的授权码
-	private static final String password = "izmezaevubsegcgi";
+	private static final String password = "ixeujbfrwcyqbcfg";
 	// 邮件的发送协议
 	private static final String protocol = "smtp";
 	// 发件人邮箱的 SMTP 服务器地址, 必须准确, 不同邮件服务器地址不同, 一般格式为: smtp.xxx.com

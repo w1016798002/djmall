@@ -21,7 +21,7 @@
     <table class="layui-table">
         <tr align="center">
             <td>用户名:</td>
-            <td><input type="text" name="userName" placeholder="请输入用户名/手机号/邮箱" onblur="getSalt(this)" /></td>
+            <td><input type="text" id="userName" name="userName" placeholder="请输入用户名/手机号/邮箱" onblur="getSalt(this)" /></td>
         </tr>
         <tr align="center">
             <td>密码:</td>
@@ -52,6 +52,7 @@
         var pwd = md5($("#pwd").val());
         var salt = $("#salt").val();
         var md5pwd = md5(pwd + salt);
+        var userName = $("#userName").val();
         $("#pwd").val(md5pwd);
         $.post(
             "<%=request.getContextPath()%>/auth/user/login",
@@ -63,11 +64,16 @@
                     });
                     return;
                 }
+                if (data.code == 300) {
+                    layer.msg(data.msg, {icon: 5}, function(){
+                        window.location.href = "<%=request.getContextPath()%>/auth/user/toUpdatePwd/"+userName;
+                    });
+                    return;
+                }
                 layer.msg(data.msg, {icon: 5})
                 layer.close(index);
             }
         )
-        // });
     }
 
     function getSalt(obj) {

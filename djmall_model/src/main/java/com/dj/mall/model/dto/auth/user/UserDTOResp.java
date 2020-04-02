@@ -84,4 +84,9 @@ public class UserDTOResp implements Serializable {
      * 角色展示
      */
     private String roleShow;
+
+    /**
+     * 重置的密码
+     */
+    private String resetPwd;
 }
