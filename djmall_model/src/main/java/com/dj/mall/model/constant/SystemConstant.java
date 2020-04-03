@@ -4,6 +4,15 @@ package com.dj.mall.model.constant;
  * @author 86150
  */
 public class SystemConstant {
+	/**
+	 * 验证码错误
+	 */
+	public static final String CODE_ERROR = "验证码错误";
+
+	/**
+	 * 验证码失效
+	 */
+	public static final String FALSE_CODE = "验证码失效";
 
 	/**
 	 * 用户名或密码不得为空
@@ -59,4 +68,9 @@ public class SystemConstant {
 	 * 您的密码已被重置，将前往修改密码页面
 	 */
 	public static final String ERROR_MSG = "您的密码已被重置，将前往修改密码页面";
+
+	/**
+	 * 手机号暂无绑定信息，请检查您的手机号
+	 */
+	public static final String PHONE_NOT = "手机号暂无绑定信息，请检查您的手机号";
 }

@@ -106,4 +106,21 @@ public interface UserApi {
      * @throws Exception
      */
     void updatePwd(String userName, String userPwd) throws Exception;
+
+    /**
+     * 获取手机验证码
+     * @param phone
+     * @throws Exception
+     */
+    void sendMessage(String phone) throws Exception, BusinessException;
+
+    /**
+     * 根据手机号修改密码
+     * @param phone
+     * @param userPwd
+     * @param code
+     * @throws Exception
+     * @throws BusinessException
+     */
+    void retrievePwd(String phone, String userPwd, Integer code) throws Exception, BusinessException;
 }

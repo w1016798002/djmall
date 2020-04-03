@@ -110,21 +110,27 @@
         var id = $("input[name='userId']:checked").val();
         var index = layer.load(1,{shade:0.5});
         layer.confirm('确定重置密码吗?', {icon: 3, title:'提示'}, function(index){
-            $.post("<%=request.getContextPath()%>/auth/user/resetPwd",
-                {"id":id},
-                function(data){
-                    if(data.code == 200){
-                        layer.msg(data.msg, {
-                            icon: 6,
-                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                        }, function(){
-                            window.location.href = "<%=request.getContextPath()%>/auth/user/toList";
-                        });
-                        return;
-                    }
-                    layer.msg(data.msg, {icon:5});
-                    layer.close(index);
-                });
+            layer.msg('邮件发送较慢,请稍等', {
+                icon: 1,
+                time: 2000,
+                shade: [0.8, '#393D49']
+            }, function () {
+                $.post("<%=request.getContextPath()%>/auth/user/resetPwd",
+                    {"id": id},
+                    function (data) {
+                        if (data.code == 200) {
+                            layer.msg(data.msg, {
+                                icon: 6,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function () {
+                                window.location.href = "<%=request.getContextPath()%>/auth/user/toList";
+                            });
+                            return;
+                        }
+                        layer.msg(data.msg, {icon: 5});
+                        layer.close(index);
+                    });
+            })
         });
         layer.close(index);
     }

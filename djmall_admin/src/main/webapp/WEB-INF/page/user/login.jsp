@@ -28,7 +28,8 @@
             <td><input type="password" name="userPwd" placeholder="请输入密码" id="pwd"/></td>
         </tr>
         <tr align="center">
-            <td colspan="2"><a href="<%=request.getContextPath()%>/auth/user/toAdd" style="color: red">还没有账号?点我去注册!</a><br /></td>
+            <td colspan="2"><a href="<%=request.getContextPath()%>/auth/user/toAdd" style="color: red">还没有账号?点我去注册!</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/auth/user/toRetrievePwd" style="color: blue">忘记密码？</a></td>
         </tr>
         <tr align="center">
             <td colspan="2">

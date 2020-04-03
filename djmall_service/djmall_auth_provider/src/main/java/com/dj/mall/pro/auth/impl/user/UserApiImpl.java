@@ -10,18 +10,21 @@ import com.dj.mall.entity.auth.user.UserRoleEntity;
 import com.dj.mall.mapper.auth.bo.user.UserBOReq;
 import com.dj.mall.mapper.auth.user.UserMapper;
 import com.dj.mall.model.base.BusinessException;
+import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.constant.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.JavaEmailUtils;
+import com.dj.mall.model.util.MessageVerifyUtils;
 import com.dj.mall.model.util.PasswordSecurityUtil;
 import com.dj.mall.pro.auth.service.user.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -262,5 +265,71 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
         updateWrapper.set("user_pwd", userPwd);
         updateWrapper.eq("user_name", userName).or().eq("email", userName).or().eq("phone", userName);
         this.update(updateWrapper);
+    }
+
+    /**
+     * 获取手机验证码
+     *
+     * @param phone
+     * @throws Exception
+     */
+    @Override
+    public void sendMessage(String phone) throws Exception, BusinessException {
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", phone);
+        UserEntity userEntity = this.getOne(queryWrapper);
+        if (userEntity == null) {
+            throw new BusinessException(SystemConstant.PHONE_NOT);
+        }
+        if (userEntity.getIsDel().equals(SystemConstant.IS_DEL_TRUE)) {
+            throw new BusinessException(SystemConstant.DEL);
+        }
+        //时间加减
+        Calendar cal = Calendar.getInstance();
+        //设置起时间
+        cal.setTime(new Date());
+        //增加分钟
+        cal.add(Calendar.MINUTE, 2);
+        int newCode = MessageVerifyUtils.getNewcode();
+        //根据手机号修改验证码
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("code_time", cal.getTime())
+                .set("code", newCode);
+        updateWrapper.eq("phone", phone);
+        this.update(updateWrapper);
+        MessageVerifyUtils.sendSms(String.valueOf(userEntity.getPhone()), String.valueOf(newCode));
+    }
+
+    /**
+     * 根据手机号修改密码
+     *
+     * @param phone
+     * @param userPwd
+     * @param code
+     * @throws Exception
+     * @throws BusinessException
+     */
+    @Override
+    public void retrievePwd(String phone, String userPwd, Integer code) throws Exception, BusinessException {
+        //获取查到的数据
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("code", code)
+                .eq("phone", phone);
+        UserEntity user = this.getOne(queryWrapper);
+        //判断数据库中是否存在此条数据
+        if(null == user) {
+            throw  new BusinessException(SystemConstant.CODE_ERROR);
+        }
+        //验证码已失效
+        if(System.currentTimeMillis() > user.getCodeTime().getTime()) {
+            throw  new BusinessException(SystemConstant.FALSE_CODE);
+        }
+        UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("user_pwd", userPwd);
+        updateWrapper.eq("phone", phone);
+        this.update(updateWrapper);
+        //发送邮件
+        DateFormat df = DateFormat.getDateTimeInstance();
+        JavaEmailUtils.sendEmail(user.getEmail(), "修改密码", "您的账户"+user.getNickName()+"，于"+df.format(new Date())+"时进行密码修改成功。");
     }
 }

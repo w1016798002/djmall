@@ -13,7 +13,7 @@ public class BusinessException extends RuntimeException implements Serializable 
 
     private String errorMsg;
 
-    private Integer errorCode;
+    private Integer errorCode = -1;
 
     public BusinessException() {}
 

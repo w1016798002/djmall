@@ -81,4 +81,14 @@ public class UserEntity implements Serializable {
      * 重置的密码
      */
     private String resetPwd;
+
+    /**
+     * 验证码
+     */
+    private Integer code;
+
+    /**
+     * 验证码有效时间
+     */
+    private Date codeTime;
 }

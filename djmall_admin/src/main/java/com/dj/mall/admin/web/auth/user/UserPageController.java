@@ -109,4 +109,15 @@ public class UserPageController {
         model.addAttribute("salt", salt);
         return "user/update_pwd";
     }
+
+    /**
+     * 去忘记密码页面
+     * @return
+     */
+    @RequestMapping("toRetrievePwd")
+    public String toRetrievePwd(Model model) throws Exception{
+        String salt = PasswordSecurityUtil.generateSalt();
+        model.addAttribute("salt", salt);
+        return "user/retrieve_pwd";
+    }
 }

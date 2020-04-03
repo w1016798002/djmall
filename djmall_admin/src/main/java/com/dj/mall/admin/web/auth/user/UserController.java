@@ -1,6 +1,7 @@
 package com.dj.mall.admin.web.auth.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.aliyuncs.exceptions.ClientException;
 import com.dj.mall.admin.vo.auth.user.UserVOReq;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.user.UserApi;
@@ -9,6 +10,7 @@ import com.dj.mall.model.constant.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.model.util.MessageVerifyUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -16,7 +18,10 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户控制层
@@ -171,6 +176,24 @@ public class UserController {
     @RequestMapping("updatePwd")
     public ResultModel<Object> updatePwd(String userName, String userPwd) throws Exception {
         userApi.updatePwd(userName, userPwd);
+        return new ResultModel<>().success();
+    }
+
+    /**
+     * 手机验证码
+     * @param phone
+     * @return
+     */
+    @RequestMapping("sendMessage")
+    public ResultModel<Object> sendMessage(String phone) throws Exception {
+        userApi.sendMessage(phone);
+        return new ResultModel<>().success();
+    }
+
+
+    @RequestMapping("retrievePwd")
+    public ResultModel<Object> retrievePwd(String phone, String userPwd, Integer code) throws Exception {
+        userApi.retrievePwd(phone, userPwd, code);
         return new ResultModel<>().success();
     }
 }
