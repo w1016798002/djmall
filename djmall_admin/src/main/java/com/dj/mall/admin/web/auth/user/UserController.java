@@ -190,7 +190,14 @@ public class UserController {
         return new ResultModel<>().success();
     }
 
-
+    /**
+     * 手机号修改密码
+     * @param phone
+     * @param userPwd
+     * @param code
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("retrievePwd")
     public ResultModel<Object> retrievePwd(String phone, String userPwd, Integer code) throws Exception {
         userApi.retrievePwd(phone, userPwd, code);

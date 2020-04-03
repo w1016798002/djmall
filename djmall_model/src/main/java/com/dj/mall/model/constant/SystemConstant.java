@@ -73,4 +73,9 @@ public class SystemConstant {
 	 * 手机号暂无绑定信息，请检查您的手机号
 	 */
 	public static final String PHONE_NOT = "手机号暂无绑定信息，请检查您的手机号";
+
+	/**
+	 * 激活状态 1
+	 */
+	public static final Integer ACTIVATE = 1;
 }

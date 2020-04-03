@@ -136,6 +136,13 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
         userRoleEntity.setRoleId(roleId);
         userRoleEntity.setUserId(user.getId());
         userRoleService.save(userRoleEntity);
+        //发送邮件
+        Integer id = user.getId();
+        DateFormat df = DateFormat.getDateTimeInstance();
+        JavaEmailUtils.sendEmail(user.getEmail(), "激活用户",
+                "您的账户在"+df.format(new Date())+"时注册成功" +
+                        "<a href='http://127.0.0.1:8081/admin/auth/user/toUpdateStatusById/"+id+"'>点我激活</a><br>"
+        );
     }
 
     /**
@@ -242,7 +249,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, UserEntity> implements 
         DateFormat df = DateFormat.getDateTimeInstance();
         JavaEmailUtils.sendEmail(user.getEmail(), "重置密码",
                 "您的密码已被管理员于"+df.format(new Date())+"时重置为"+resetPwd+".为了您的账户安全，请及时修改。</br>" +
-                        "<a href='http://localhost:8081/admin/auth/user/toLogin'>点我去登陆</a><br>"
+                        "<a href='http://127.0.0.1:8081/admin/auth/user/toLogin'>点我去登陆</a><br>"
         );
         UpdateWrapper<UserEntity> updateWrapper = new UpdateWrapper();
         updateWrapper.set("user_pwd", md5ResetPwd)

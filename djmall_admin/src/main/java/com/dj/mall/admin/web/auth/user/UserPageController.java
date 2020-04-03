@@ -6,6 +6,7 @@ import com.dj.mall.admin.vo.auth.user.UserRoleVOResp;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.role.RoleApi;
 import com.dj.mall.api.auth.user.UserApi;
+import com.dj.mall.model.constant.SystemConstant;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.dto.auth.user.UserRoleDTOResp;
@@ -119,5 +120,17 @@ public class UserPageController {
         String salt = PasswordSecurityUtil.generateSalt();
         model.addAttribute("salt", salt);
         return "user/retrieve_pwd";
+    }
+
+    /**
+     * 去激活
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("toUpdateStatusById/{id}")
+    public String toUpdateStatusById(@PathVariable Integer id) throws Exception {
+        userApi.updateStatusById(id, SystemConstant.ACTIVATE);
+        return "user/login";
     }
 }
