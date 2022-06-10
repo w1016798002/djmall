@@ -24,7 +24,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dubbo.version>2.6.4</dubbo.version>
+        <dubbo.version>2.6.12</dubbo.version>
         <dubbo-spring-boot.version>0.2.0</dubbo-spring-boot.version>
         <dubbo-spring-context-support.version>1.0.2</dubbo-spring-context-support.version>
         <netty-all.version>4.1.43.Final</netty-all.version>
